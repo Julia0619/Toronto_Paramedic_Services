@@ -53,6 +53,7 @@ total_emergency_calls
 simulated_data$total_emergency_calls <- total_emergency_calls
 view(simulated_data)
 
+#### Saving the Data ####
 # Save the simulated data as a csv file in data/raw_data
 # The csv file will be called "simulated_data.csv"
 
