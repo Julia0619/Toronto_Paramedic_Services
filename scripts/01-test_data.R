@@ -23,7 +23,7 @@ view(data)
 # This test will help to double check whether the number of calls for each incident type 
 # correctly add up to the total number of emergency calls
 
-data$total_emergency_calls == rowSums(data[,2:5])
+data$total_emergency_calls == rowSums(data[,2:7])
 
 # Test 2: Testing whether there are any null or negative  values in the dataframe
 # As it is very unlikely to not have any calls and because it does not make sense to have 

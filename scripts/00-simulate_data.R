@@ -38,14 +38,16 @@ simulated_data <-
     medical_calls = rpois(n = num_calls, lambda = 50000), 
     vehicle_accident_calls = rpois(n = num_calls, lambda = 25000),
     emergency_transfer_calls = rpois(n = num_calls, lambda = 10000),
-    fire_calls = rpois(n = num_calls, lambda = 1000))
+    fire_calls = rpois(n = num_calls, lambda = 1000),
+    airport_standby_calls = rpois(n = num_calls, lambda = 50),
+    unclassified_calls = rpois(n = num_calls, lambda = 200))
 
 view(simulated_data)
 
 # The code below adds up the number of calls for each incident type to create a total
 # number of emergency calls column
 
-total_emergency_calls = rowSums(simulated_data[,2:5])
+total_emergency_calls = rowSums(simulated_data[,2:7])
 total_emergency_calls
 
 # The following code adds the new total column we made to the dataframe, "simulated_data"
