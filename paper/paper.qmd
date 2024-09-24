@@ -1,10 +1,9 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Toronto Paramedic Services"
+subtitle: "A deeper look into what is driving high EMS demand in Toronto"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Julia Lee
+thanks: "Code and data are available at: https://github.com/JuliaJLee/Toronto_Paramedic_Services.git"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -19,122 +18,46 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(tinytex)
+library(knitr)
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+"In case of an emergency, please call 911." From building walls to road signs, this is a message that appears almost everywhere, and it instills the idea that no matter the circumstance, there will always be emergency services available to help. However, research shows that this is not the case. A report on Toronto's paramedic services highlights that there were no ambulances available to over 1,000 calls in 2023 @auditorreport. With drastically increasing wait times for those who required EMS (emergency medical services), it is crucial to understand why paramedic services are unable to keep up with a seemingly growing demand for EMS.
 
-The remainder of this paper is structured as follows. @sec-data....
+In response to this rising challenge, the report posits that in order to elevate the "efficiency and effectiveness" @auditorreport of Toronto's paramedic services, further research on how to manage EMS demand is needed. Thus, this paper seeks to investigate the factors that seem to be driving EMS demand within Toronto. Using Paramedic Services Incident Data offered by Toronto Paramedic Services, the aim is to identify which types of emergencies (e.g. medical emergencies or vehicle accidents) strongly drive EMS demand. Knowing this can help inform effective strategies that allocate resources to these drivers for better EMS demand management. 
 
+With this, this paper first examines the total number of emergency calls made from 2017 to 2022 to better understand how EMS demand has changed over time. Then, it looks at EMS demand through five different incident types as outlined by Toronto Paramedic Services to determine any key drivers of the total EMS demand. As a result, ...
 
+In what follows, the paper will define the data that was used within this analysis, provide a detailed account of the results, and put forth a meaningful reflection of the analysis along with its limitations and next steps.
 
-# Data {#sec-data}
+# Data
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+Paramedic Services Incident Data (2017-2022) is provided by Toronto Paramedic Services [@torontoparamedicservices]. The records of when a paramedic was dispatched having received a call, they type of incident, the priority level of each incident, the number of paramedic units that arrived at the scene, and the general location of each incident are all updated by hand to the city of Toronto's Open Data portal [@opentorontodata]. 
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+To simulate, test, download, and clean the Paramedic Services Incident Data (2017-2022), the statistical programming language R was used [@citeR]. Specific libraries that assisted the analysis include `tidyverse` [@tidyverse], `dplyr` [@dplyr], `opendatatoronto` [@opendatatoronto], `tinytex` [@tinytex], `ggplot2` [@ggplot2], and `knitr` [@knitr]. 
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+The Paramedic Services Incident Data is refreshed annually and contains information on every single incident paramedics have responded to since January 1st to December 31st in 2017 to 2022. For every day of each year, there are multiple records of incidents that have occurred. For every record or incident, the date and time when a paramedic unit was dispatched and the type of incident is included.
 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
 #| echo: false
-#| warning: false
 #| message: false
+#| label: tbl-rawdata
+#| tbl-cap: "Paramedic Services Incident Data for 2022" 
 
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+data <- read_csv(here::here("data/raw_data/raw_data_2022.csv"))
 
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+knitr::kable(head(data[, 3:4]), "simple", position = "left")
 ```
 
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
+@tbl-rawdata above previews this information for each recorded incident in 2022. For this analysis, the variables of interest within this analysis are the different incident types that are recorded. This dataset lists five different incident types: medical emergencies, vehicle accidents, emergency transfers, fires, and airport standbys. These types refer to different circumstances under which individuals may call 911 for EMS. 
 
 
 # Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
 
 
 
@@ -151,66 +74,6 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 ## Weaknesses and next steps
 
 Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
 
 
 \newpage
