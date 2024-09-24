@@ -20,8 +20,7 @@ bibliography: references.bib
 library(tidyverse)
 library(tinytex)
 library(knitr)
-
-data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+library(ggplot2)
 ```
 
 
@@ -41,7 +40,7 @@ Paramedic Services Incident Data (2017-2022) is provided by Toronto Paramedic Se
 
 To simulate, test, download, and clean the Paramedic Services Incident Data (2017-2022), the statistical programming language R was used [@citeR]. Specific libraries that assisted the analysis include `tidyverse` [@tidyverse], `dplyr` [@dplyr], `opendatatoronto` [@opendatatoronto], `tinytex` [@tinytex], `ggplot2` [@ggplot2], and `knitr` [@knitr]. 
 
-The Paramedic Services Incident Data is refreshed annually and contains information on every single incident paramedics have responded to since January 1st to December 31st in 2017 to 2022. For every day of each year, there are multiple records of incidents that have occurred. For every record or incident, the date and time when a paramedic unit was dispatched and the type of incident is included.
+The Paramedic Services Incident Data is refreshed annually and contains information on every single incident paramedics have responded to since January 1st to December 31st in 2017 to 2022. For every day of each year, there are multiple records of incidents that have occurred. For every record, there is an ID number, the date and time when a paramedic unit was dispatched, the type of incident, the severity of the incident (priority), the number of paramedic units at the scene, and the general location of the incident. @tbl-rawdata below previews this information for recorded incidents in 2022.
 
 ```{r}
 #| echo: false
@@ -51,15 +50,65 @@ The Paramedic Services Incident Data is refreshed annually and contains informat
 
 data <- read_csv(here::here("data/raw_data/raw_data_2022.csv"))
 
-knitr::kable(head(data[, 3:4]), "simple", position = "left")
+data <- 
+ data |> 
+  select(-...1)
+
+data |>
+  slice(1:6) |>
+  kable(
+    col.names = c("ID", "Dispatch Time", "Incident Type", "Priority", 
+                  "Units Arrived", "Location"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = "",
+    align = c("l", "l", "l", "l", "l", "l"),
+    format.args = list(big.mark = ",")
+  )
+
 ```
 
-@tbl-rawdata above previews this information for each recorded incident in 2022. For this analysis, the variables of interest within this analysis are the different incident types that are recorded. This dataset lists five different incident types: medical emergencies, vehicle accidents, emergency transfers, fires, and airport standbys. These types refer to different circumstances under which individuals may call 911 for EMS. 
-
+For this analysis, the variables of interest within this analysis are the different incident types that are recorded. This dataset lists five different incident types: medical emergencies, vehicle accidents, emergency transfers, fires, and airport standbys. These types refer to different circumstances under which individuals may call 911 for EMS. 
 
 # Results
 
+## EMS Demand from 2017 to 2022
 
+```{r}
+#| echo: false 
+#| message: false
+#| label: fig-totalemsdemand
+#| fig-cap: Total EMS Demand for Each Year between 2017 and 2022
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
+ggplot(data, aes(x = Year, y = Total_Emergency_Calls)) + 
+  geom_line(size = 0.5, color="black") + geom_point(colour = "black") +
+  ylim(200000,300000) + theme_light() + 
+  ggtitle("EMS Demand From 2017 to 2022)") +
+  xlab("Year") + ylab("Demand for EMS") + 
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+@fig-totalemsdemand displays the total number of emergency calls for each year. The total number of emergency calls appears to increase in 2020 after a notable decrease in 2019. This pattern likely reflects the the onset of the covid-19 pandemic. Though the number of emergency calls appears to fluctuate over the years, the change is not drastic, indicating that there has consistently been a heightened demand for EMS within Toronto.
+
+To further unpack what is driving this consistent demand, each individual incident type is also considered.
+
+```{r}
+#| echo: false 
+#| message: false
+#| label: fig-incidentemsdemand
+#| fig-cap: EMS Demand for Each Year between 2017 and 2022
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
+ggplot(data, aes(x = Year)) + 
+  geom_line(aes(y = Total_Emergency_Calls), size = 0.5, colour = "black") +
+  geom_line(aes(y = Medical_Emergency_Calls), size = 0.5, colour = "blue") +
+  geom_line(aes(y = Vehicle_Accident_Calls), size = 0.5, colour = "red") +
+  geom_line(aes(y = Emergency_Transfer_Calls), size = 0.5, colour = "green") +
+  geom_line(aes(y = Fire_Calls), size = 0.5, colour = "orange") +
+  geom_line(aes(y = Airport_Standby_Calls), size = 0.5, colour = "purple")
+```
 
 # Discussion
 
