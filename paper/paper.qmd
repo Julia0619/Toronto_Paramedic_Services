@@ -83,7 +83,7 @@ For this analysis, the variables of interest within this analysis are the differ
 data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 ggplot(data, aes(x = Year, y = Total_Emergency_Calls)) + 
-  geom_line(size = 0.5, color="black") + geom_point(colour = "black") +
+  geom_line(linewidth = 0.5, color="black") + geom_point(colour = "black") +
   ylim(200000,300000) + theme_light() + 
   ggtitle("EMS Demand From 2017 to 2022)") +
   xlab("Year") + ylab("Demand for EMS") + 
