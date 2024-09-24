@@ -42,7 +42,7 @@ simulated_data <-
     airport_standby_calls = rpois(n = num_calls, lambda = 50),
     unclassified_calls = rpois(n = num_calls, lambda = 200))
 
-view(simulated_data)
+#view(simulated_data)
 
 # The code below adds up the number of calls for each incident type to create a total
 # number of emergency calls column
@@ -53,9 +53,10 @@ total_emergency_calls
 # The following code adds the new total column we made to the dataframe, "simulated_data"
 
 simulated_data$total_emergency_calls <- total_emergency_calls
-view(simulated_data)
+#view(simulated_data)
 
 #### Saving the Data ####
+
 # Save the simulated data as a csv file in data/raw_data
 # The csv file will be called "simulated_data.csv"
 

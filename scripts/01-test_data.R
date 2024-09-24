@@ -16,7 +16,7 @@ library(tidyverse)
 # Read in the simulated data
 
 data <- read_csv("data/raw_data/simulated_data.csv")
-view(data)
+#view(data)
 
 # Test 1: Testing whether the total number of emergency calls is the sum of calls related 
 # to each of the four incident types
