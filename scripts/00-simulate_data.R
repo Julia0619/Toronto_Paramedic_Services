@@ -34,7 +34,7 @@ num_calls = 6
 simulated_data <- 
   tibble(
     year = seq(from = starting_year, to = ending_year, by = 1), 
-    number_of_calls = rpois(n = num_calls, lambda = 100000))
+    number_of_emergency_calls = rpois(n = num_calls, lambda = 100000))
 
 view(simulated_data)
 
