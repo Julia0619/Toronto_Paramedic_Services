@@ -153,6 +153,21 @@ data |>
   ylim(0,20000) + scale_y_continuous(name = "Demand for EMS", labels = scales::comma)
 ```
 
+## Mapping EMS Demand 
+
+```{r}
+#| echo: false 
+#| message: false
+#| label: fig-map
+#| fig-cap: EMS Demand Across Toronto Forward Sortation Areas (Based on data from 2022)
+
+library(maps)
+library(sf)
+
+toronto_forward_sortation_areas <- st_read("data/TorontoForwardSortationAreas.shp")
+
+```
+
 
 \newpage
 
