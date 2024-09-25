@@ -6,8 +6,7 @@
 # License: MIT
 # Pre-requisites: Download and save the actual Paramedic Services Incident Data from 2017 
 # to 2022 from Open Data Toronto
-# Any other information needed? As the downloaded raw data is saved into separate files, 
-# need to clean each file and then merge them together
+# Any other information needed? N/A
 
 
 #### Setting Up the Workspace ####
