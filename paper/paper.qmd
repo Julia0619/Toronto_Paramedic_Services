@@ -164,7 +164,11 @@ data |>
 library(maps)
 library(sf)
 
+# Reading in the shapefile
 toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/TorontoForwardSortationAreas")
+
+# Reading in the data to show in map
+data <- read_csv("data/analysis_data/analysis_data_FOR_MAP.csv")
 
 ```
 
