@@ -164,7 +164,7 @@ data |>
 library(maps)
 library(sf)
 
-toronto_forward_sortation_areas <- st_read("data/TorontoForwardSortationAreas")
+toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/TorontoForwardSortationAreas")
 
 ```
 
