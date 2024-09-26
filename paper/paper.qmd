@@ -155,9 +155,10 @@ data |>
 
 ## Mapping EMS Demand 
 
-```{r}
-#| echo: false 
+```{r, results = 'hide'}
 #| message: false
+#| echo: false 
+#| warning: false
 #| label: fig-map
 #| fig-cap: EMS Demand Across Toronto Forward Sortation Areas (Based on data from 2022)
 
@@ -190,8 +191,8 @@ ggplot(merged_map_data) +
   geom_sf(aes(fill = EMS_Demand_Driver)) +
   labs(title = "EMS Demand Drivers By Forward Sortation Area (FSA)",
          x = "Longitude", y="Latitude", 
-       caption = "Data Source: Open Canada 2021 Census - Boundary Files & Toronto Paramedic Services") +
-  theme_light() + theme(plot.title = element_text(hjust = 0.5)) +
+       caption = "Data Source: Open Canada 2021 Census & Toronto Paramedic Services") +
+  theme_light() + theme(plot.title = element_text(hjust = 0.3)) +
   scale_fill_discrete(name = "EMS Demand Driver") +
   scale_fill_manual(values = c("lightblue"))
 
