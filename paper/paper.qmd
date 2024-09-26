@@ -120,7 +120,7 @@ data |>
     x = "Year", colour = "Incident Type",
     caption = "Data Source: Toronto Paramedic Services"
   ) +
-  scale_colour_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Medical Emergencies", "Total Emergency Calls", "Vehicle Accidents")) +
+  scale_colour_brewer(palette = "Dark2", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Medical Emergencies", "Total Emergency Calls", "Vehicle Accidents")) +
   ggtitle("EMS Demand (2017-2022) Based on Incident Type") +
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(0,300000) + scale_y_continuous(name = "Demand for EMS", labels = scales::comma)
@@ -147,7 +147,7 @@ data |>
     x = "Year", colour = "Incident Type",
     caption = "Data Source: Toronto Paramedic Services"
   ) +
-  scale_colour_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Vehicle Accidents")) +
+  scale_colour_brewer(palette = "Dark2", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Vehicle Accidents")) +
   ggtitle("EMS Demand (2017-2022) Based on Incident Type") +
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(0,20000) + scale_y_continuous(name = "Demand for EMS", labels = scales::comma)
@@ -187,14 +187,13 @@ merged_map_data <- merge(toronto_forward_sortation_areas, map_data, by = "CFSAUI
 # Map the merged data
 
 ggplot(merged_map_data) + 
-  geom_sf(aes(fill = "EMS Demand Driver")) +
+  geom_sf(aes(fill = EMS_Demand_Driver)) +
   labs(title = "EMS Demand Drivers By Forward Sortation Area (FSA)",
          x = "Longitude", y="Latitude", 
-       caption = "Data Source: Open Canada 2021 Census - Boundary Files & Toronto Paramedic Services",
-       labels = c("Medical Emergencies")) +
-  theme_light() + theme(plot.title = element_text(hjust = 0.5))
-
-
+       caption = "Data Source: Open Canada 2021 Census - Boundary Files & Toronto Paramedic Services") +
+  theme_light() + theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_discrete(name = "EMS Demand Driver") +
+  scale_fill_manual(values = c("lightblue"))
 
 ```
 
