@@ -1,12 +1,12 @@
 ---
 title: "Toronto Paramedic Services"
-subtitle: "A deeper look into what is driving Emergency Medical Services (EMS) demand in Toronto"
+subtitle: "A deeper look into what drives Emergency Medical Services (EMS) demand."
 author: 
   - Julia Lee
 thanks: "Code and data are available at: https://github.com/JuliaJLee/Toronto_Paramedic_Services.git"
 date: today
 date-format: long
-abstract: "In 2023, there were over 1,000 cases where an ambulance was unavailable to respond to an emergency call. This calls for urgent action because in emergency situations, every moment is critical. By examining Paramedic Services Incident Data (2017-2022) provided by Toronto Paramedic Services, the following anaylsis aims to identify the key drivers of Emergency Medical Services (EMS) demand within Toronto to help inform more effective strategies for managing EMS demand. In short, medical emergencies and vehicle accidents appear to be the most prominent drivers of EMS demand, suggesting that strategies that seek to better manage demand in these areas may enhance the overall efficiency of paramedic services."
+abstract: "In 2023, there were over 1,000 cases where an ambulance was unavailable to respond to an emergency call. This calls for urgent action as every moment is critical in emergency situations. By examining Paramedic Services Incident Data (2017-2022) provided by Toronto Paramedic Services, the following anaylsis aims to identify the key drivers of Emergency Medical Services (EMS) demand within Toronto to help inform more effective strategies for managing EMS demand. In short, medical emergencies and vehicle accidents appear to be the most prominent drivers of EMS demand, suggesting that strategies that seek to better manage demand in these areas may enhance the overall efficiency of paramedic services."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -27,19 +27,21 @@ library(dplyr)
 
 # Introduction
 
-"In case of an emergency, please call 911." From building walls to road signs, this is a message that appears almost everywhere, and it instills the idea that no matter the circumstance, there will always be emergency services available to help. However, research shows that this is not the case. A report on Toronto's paramedic services highlights that there were no ambulances available to over 1,000 calls in 2023 @auditorreport. With drastically increasing wait times for those who required Eemergency Medical Services (EMS), it is crucial to understand why paramedic services are unable to keep up with a seemingly growing demand for EMS.
+"In case of an emergency, please call 911." From building walls to road signs, this is a message that appears almost everywhere, and it instills the idea that no matter the circumstance, there will always be emergency services available to help. However, research shows that this is not the case. A report on Toronto's paramedic services highlights that there were no ambulances available to over 1,000 calls in 2023 [@auditorreport]. With drastically increasing wait times for those who required Emergency Medical Services (EMS), it is crucial to understand why paramedic services are unable to keep up with a seemingly growing demand for EMS.
 
-In response to this rising challenge, the report posits that in order to elevate the "efficiency and effectiveness" @auditorreport of Toronto's paramedic services, further research on how to manage EMS demand is needed. Thus, this paper seeks to investigate the factors that seem to be driving EMS demand within Toronto. Using Paramedic Services Incident Data offered by Toronto Paramedic Services, the aim is to identify which types of emergencies (e.g. medical emergencies or vehicle accidents) strongly drive EMS demand. Knowing this can help inform effective strategies that allocate resources to these drivers for better EMS demand management. 
+In response to this rising challenge, the report posits that in order to elevate the "efficiency and effectiveness" [@auditorreport] of Toronto's paramedic services, further research on how to manage EMS demand is needed. Thus, this paper seeks to investigate the factors that seem to be driving EMS demand within Toronto. Using Paramedic Services Incident Data offered by Toronto Paramedic Services, the aim is to identify which types of emergencies (e.g. medical emergencies or vehicle accidents) strongly drive EMS demand. Knowing this can help inform effective strategies that allocate resources to these drivers for better EMS demand management. 
 
 With this, this paper first examines the total number of emergency calls made from 2017 to 2022 to better understand how EMS demand has changed over time. Then, it looks at EMS demand through five different incident types as outlined by Toronto Paramedic Services to determine which of these five incident types are key drivers of the total EMS demand. As a result, this analysis finds that medical emergencies and vehicle accidents are notable drivers of EMS demand within Toronto. 
 
-In what follows, the paper will define the data that was used within this analysis, provide a detailed account of the results, and put forth a discussion of the analysis along with its limitations and next steps.
+In what follows, the paper will define the data that was used within this analysis (@sec-data), provide a detailed account of the results (@sec-results), and put forth a discussion of the analysis along with its limitations and next steps (@sec-discussion).
 
-# Data
+# Data {#sec-data}
+
+## Toronto Paramedic Services Data
 
 Paramedic Services Incident Data (2017-2022) is provided by Toronto Paramedic Services [@torontoparamedicservices]. The records of when a paramedic was dispatched having received a call, they type of incident, the priority level of each incident, the number of paramedic units that arrived at the scene, and the general location of each incident are all updated by hand to the city of Toronto's Open Data portal [@opentorontodata]. 
 
-To simulate, test, download, and clean the Paramedic Services Incident Data (2017-2022), the statistical programming language R was used [@citeR]. Specific libraries that assisted the analysis include `tidyverse` [@tidyverse], `dplyr` [@dplyr], `opendatatoronto` [@opendatatoronto], `tinytex` [@tinytex], `ggplot2` [@ggplot2], and `knitr` [@knitr]. 
+To simulate, test, download, and clean the Paramedic Services Incident Data (2017-2022), the statistical programming language R was used [@citeR]. Specific libraries that assisted the analysis include `tidyverse` [@tidyverse], `dplyr` [@dplyr], `opendatatoronto` [@opendatatoronto], `tinytex` [@tinytex], `ggplot2` [@ggplot2], `knitr` [@knitr], `maps` [@maps], and `sf` [@sf]. 
 
 The Paramedic Services Incident Data is refreshed annually and contains information on every single incident paramedics have responded to since January 1st to December 31st in 2017 to 2022. For every day of each year, there are multiple records of incidents that have occurred. For every record, there is an ID number, the date and time when a paramedic unit was dispatched, the type of incident, the severity of the incident (priority), the number of paramedic units at the scene, and the general location of the incident. @tbl-rawdata below previews this information for recorded incidents in 2022.
 
@@ -56,7 +58,7 @@ data <-
   select(-...1)
 
 data |>
-  slice(1:6) |>
+  slice(1:3) |>
   kable(
     col.names = c("ID", "Dispatch Time", "Incident Type", "Priority", 
                   "Units Arrived", "Location"),
@@ -69,9 +71,64 @@ data |>
 
 ```
 
-For this analysis, the variables of interest within this analysis are the different incident types that are recorded. This dataset lists five different incident types: medical emergencies, vehicle accidents, emergency transfers, fires, and airport standbys. These types refer to different circumstances under which individuals may call 911 for EMS. 
+Looking at @tbl-rawdata, the variable, "ID", is a number that identifies each incident in accordance with a Computer Aided Dispatch (CAD) record [@torontoparamedicservices]. "Dispatch Time" represents the date and time, measured in minutes and seconds, at which paramedics responded to an emergency call. This data further provides information on the type of emergency paramedics responded to with the variable, "Incident Type". "Priority" refers to the urgency of all incoming emergency calls. The priority level is measured using a "Medical Priority Dispatch System (MPDS)" that organizes incoming information from 911 callers into different categories. For instance, in @tbl-rawdata, the priority level is 1 for all three incidents, meaning that the MPDS assessed the information provided by callers and their situations as extremely urgent. "Units Arrived" is a count of the number of paramedic units that were present at the scene. Lastly, "Location" characterizes the approximate location of each incident and is measured using Forward Sortation Areas (i.e. the first three characters of postal codes). 
 
-# Results
+## Analysis Data {#sec-analysis}
+
+For this analysis, the variables of interest are the different types of incidents that are recorded. The Paramedic Services Incident Data lists five different incident types: (1) medical emergencies, (2) motor vehicle accidents, (3) emergency transfers, (4) fires, and (5) airport standbys. Each type refers to a different circumstance under which individuals may call 911 for EMS. 
+
+As the objective is to understand the driving factors of EMS demand, the actual data that is used within this analysis reflects the total EMS demand and the demand for each incident type over the course of six years (2017-2022). All recorded incidents were aggregated together by incident type to see the number of emergency calls for each type. Then, the number of emergency calls for each incident type were summed to produce a total EMS demand count. This process was repeated every year from 2017 to 2022. @tbl-analysisdata (found below) illustrates the outcome of this process, and summary statistics for this analysis data can be found in the Appendix (@sec-appendix).
+
+```{r}
+#| echo: false
+#| message: false
+#| label: tbl-analysisdata
+#| tbl-cap: "Organized Paramedic Services Incident Data (2017-2022)" 
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
+data |>
+  slice(1:6) |>
+  kable(
+    col.names = c("Year", "Medical Emergency Calls", "Vehicle Accident Calls", "Emergency Transfer Calls",
+                  "Fire Calls", "Airport Standby Calls", "Unclassified Calls", "Total Emergency Calls"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = "",
+    align = c("l", "l", "l", "l", "l", "l")
+  )
+```
+
+The column "Unclassified Calls" in @tbl-analysisdata represents the emergency calls that were not assigned an incident type. It is important to note that throughout the analysis, these records are omitted. 
+
+## Map Data
+
+To further understand what drives EMS demand, this analysis uses the Forward Sortation Areas (FSA) provided by the Paramedic Services Incident Data (2017-2022) to map the driver of EMS demand within each FSA. For the maps within this analysis, the analysis data explained in @sec-analysis needed to be modified. By grouping the data by FSAs, the types of incidents recorded within each unique FSA and the number of incidents that occurred with each incident type could be found. The "driver" of EMS demand for a given FSA was determined by the incident type that had the most number of calls. A small snippet of the modified analysis data is shown below in @tbl-mapdata. 
+
+```{r}
+#| echo: false
+#| message: false
+#| label: tbl-mapdata
+#| tbl-cap: "Modified Analysis Data for Mapping" 
+
+data <- read_csv(here::here("data/analysis_data/analysis_data_FOR_MAP.csv"))
+
+data |>
+  slice(1:2) |>
+  kable(
+    col.names = c("CFSAUID", "Incident Type", "Emergency Transfers", "Medical Emergencies",
+                  "Vehicle Accidents", "Fires", "Airport Standbys", "EMS Demand Driver"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = "",
+    align = c("r", "r", "r", "r", "c", "r"),
+    format.args = list(big.mark = ",")
+  )
+```
+
+To map this data, a shapefile with the boundaries for Toronto's FSAs was required. This data was acquired from the Open Government Data portal by the Government of Canada (CITATION). 
+
+# Results {#sec-results}
 
 ## EMS Demand from 2017 to 2022
 
@@ -202,7 +259,7 @@ ggplot(merged_map_data) +
 \newpage
 
 
-# Discussion
+# Discussion {#sec-discussion}
 
 As demand for EMS continues to be a challenge, identifying the areas where most of the demand comes from can help better inform strategies to better manage it. To this, the given analysis finds that medical emergencies and vehicle accidents are notable drivers of EMS demand within Toronto. 
 
@@ -211,6 +268,43 @@ Response times for EMS demand have been greatly impacted by offload delays, staf
 Traffic congestion has been found to increase paramedic response times [@journal], and with the current increase in traffic due to multiple construction projects throughout Toronto, longer paramedic response times and the unavailability of paramedic services can be expected. To efficiently navigate EMS demand for vehicle accidents, strategies may center around accident prevention or effective distribution of resources near accident-prone regions for faster response times. 
 
 Thus, these findings offer a deeper understanding about the underlying factors that can drive EMS demand, and this understanding can further facilitate the exploration of various strategies that allow paramedic services to effectively operate even under high demand.
+
+\newpage
+
+\appendix
+
+# Appendix {#sec-appendix}
+
+## Analysis Data Summary Statistics
+
+```{r}
+#| echo: false
+#| message: false
+#| label: tbl-analysisdata
+#| tbl-cap: "Organized Paramedic Services Incident Data (2017-2022)" 
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
+summary_data <- summary(data[1,2:8])
+view(summary_data)
+
+data |>
+  slice(1:6) |>
+  kable(
+    col.names = c("Year", "Medical Emergency Calls", "Vehicle Accident Calls", "Emergency Transfer Calls",
+                  "Fire Calls", "Airport Standby Calls", "Unclassified Calls", "Total Emergency Calls"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = "",
+    align = c("l", "l", "l", "l", "l", "l"),
+    format.args = list(big.mark = ",")
+  )
+
+```
+
+## Map Data 
+
+
 
 \newpage
 
