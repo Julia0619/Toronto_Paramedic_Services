@@ -73,7 +73,7 @@ view(fsa_data_3)
 
 ## Add a column that contains the name of the incident type that had the most demand for each fsa
 
-fsa_data_3$"EMS Demand Driver" <- colnames(fsa_data_3)[apply(fsa_data_3,1,which.max)]
+fsa_data_3$"EMS_Demand_Driver" <- colnames(fsa_data_3)[apply(fsa_data_3,1,which.max)]
 #view(fsa_data_3)
 
 ## Change the "Forward_Sortation_Area" column name to "CFSAUID" - this is the name of the column
