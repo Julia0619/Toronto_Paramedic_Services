@@ -84,7 +84,7 @@ For this analysis, the variables of interest within this analysis are the differ
 data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 ggplot(data, aes(x = Year, y = Total_Emergency_Calls)) + 
-  geom_line(linewidth = 0.5, color="black") + geom_point(colour = "black") +
+  geom_line(linewidth = 0.5, colour="black") + geom_point(colour = "black") +
   ylim(200000,300000) + theme_light() + 
   ggtitle("EMS Demand From 2017 to 2022") +
   labs(x = "Year", y = "Demand for EMS", caption = "Data Source: Toronto Paramedic Services") + 
@@ -112,15 +112,15 @@ data |>
     names_to = "series",
     values_to = "value"
   ) |>
-  ggplot(mapping = aes(x = Year, y = value, color = series)) +
+  ggplot(mapping = aes(x = Year, y = value, colour = series)) +
   geom_line() +
   geom_point() +
   theme_light() +
   labs(
-    x = "Year", color = "Incident Type",
+    x = "Year", colour = "Incident Type",
     caption = "Data Source: Toronto Paramedic Services"
   ) +
-  scale_color_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Medical Emergencies", "Total Emergency Calls", "Vehicle Accidents")) +
+  scale_colour_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Medical Emergencies", "Total Emergency Calls", "Vehicle Accidents")) +
   ggtitle("EMS Demand (2017-2022) Based on Incident Type") +
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(0,300000) + scale_y_continuous(name = "Demand for EMS", labels = scales::comma)
@@ -139,15 +139,15 @@ data |>
     names_to = "series",
     values_to = "value"
   ) |>
-  ggplot(mapping = aes(x = Year, y = value, color = series)) +
+  ggplot(mapping = aes(x = Year, y = value, colour = series)) +
   geom_line() +
   geom_point() +
   theme_light() +
   labs(
-    x = "Year", color = "Incident Type",
+    x = "Year", colour = "Incident Type",
     caption = "Data Source: Toronto Paramedic Services"
   ) +
-  scale_color_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Vehicle Accidents")) +
+  scale_colour_brewer(palette = "Set3", labels = c("Airport Standbys", "Emergency Transfers", "Fires", "Vehicle Accidents")) +
   ggtitle("EMS Demand (2017-2022) Based on Incident Type") +
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(0,20000) + scale_y_continuous(name = "Demand for EMS", labels = scales::comma)
@@ -164,11 +164,35 @@ data |>
 library(maps)
 library(sf)
 
-data <- read_csv(here::here("data/analysis_data/analysis_data_FOR_MAP.csv"))
-
 # Reading in the shapefile
-#toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/TorontoForwardSortationAreas")
 
+toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/TorontoForwardSortationAreas")
+#view(toronto_forward_sortation_areas)
+
+# Reading in the paramedic services data
+
+map_data <- read_csv(here::here("data/analysis_data/analysis_data_FOR_MAP.csv"))
+#view(map_data)
+
+# Test to see if shapefile produces a map
+
+#ggplot(toronto_forward_sortation_areas) + 
+  #geom_sf()
+
+# Merge map_data and toronto_forward_sortation_areas by the column "CFSAUID"
+
+merged_map_data <- merge(toronto_forward_sortation_areas, map_data, by = "CFSAUID")
+#view(merged_map_data)
+
+# Map the merged data
+
+ggplot(merged_map_data) + 
+  geom_sf(aes(fill = "EMS Demand Driver")) +
+  labs(title = "EMS Demand Drivers By Forward Sortation Area (FSA)",
+         x = "Longitude", y="Latitude", 
+       caption = "Data Source: Open Canada 2021 Census - Boundary Files & Toronto Paramedic Services",
+       labels = c("Medical Emergencies")) +
+  theme_light() + theme(plot.title = element_text(hjust = 0.5))
 
 
 
