@@ -32,7 +32,7 @@ find_fsa
 ## Organize data by fsa
 
 organized_data <- data[order(data$Forward_Sortation_Area, decreasing = TRUE),]
-view(organized_data)
+#view(organized_data)
 
 ## As there are many rows with "-" as the forward sortation area, want to remove them
 
@@ -49,8 +49,8 @@ fsa_data_2 <- fsa_data[,-c(1:3,5:6)]
 ### First, create a dataframe that has each fsa in a single row and a list of all the incident types in 
 ### a column
 
-fsa_data_3 <- fsa_data_2 %>% 
-  group_by(Forward_Sortation_Area) %>% 
+fsa_data_3 <- fsa_data_2 |> 
+  group_by(Forward_Sortation_Area) |> 
   summarise(Incident_Type = paste(Incident_Type, collapse = ","))
 #view(fsa_data_3)
 
@@ -71,6 +71,22 @@ fsa_data_3$"Fires" <- str_count(fsa_data_3$Incident_Type, "Fire")
 fsa_data_3$"Airport Standbys" <- str_count(fsa_data_3$Incident_Type, "Airport Standby")
 view(fsa_data_3)
 
+## Add a column that contains the name of the incident type that had the most demand for each fsa
+
+fsa_data_3$"EMS Demand Driver" <- colnames(fsa_data_3)[apply(fsa_data_3,1,which.max)]
+#view(fsa_data_3)
+
+## Change the "Forward_Sortation_Area" column name to "CFSAUID" - this is the name of the column
+## with the forward sortation areas in the shapefile, so having the same column name can make it 
+## easier to join this cleaned data to the shapefile
+
+fsa_data_3 <-
+  fsa_data_3 |>
+  rename(
+    CFSAUID = Forward_Sortation_Area
+  )
+view(fsa_data_3)
+
 ------------------------------------------------------------------------------------------
 
 #### Saving the Data ####
@@ -89,10 +105,10 @@ write_csv(fsa_data_3, file = "data/analysis_data/analysis_data_FOR_MAP.csv")
 # So, will test if the value for Emergency Transfer calls is equal to the count in the "Incident_Type"
 # column
 
-test_cleaned_data <- read_csv("data/analysis_data/analysis_data_FOR_MAP.csv")
-#view(test_cleaned_data)
+test_clean_map_data <- read_csv("data/analysis_data/analysis_data_FOR_MAP.csv")
+#view(test_clean_map_data)
 
-test_cleaned_data$`Emergency Transfers` == str_count(test_cleaned_data$Incident_Type, "Emergency Transfer")
+test_clean_map_data$`Emergency Transfers` == str_count(test_clean_map_data$Incident_Type, "Emergency Transfer")
 
 # Test 2: Testing whether there are any null or negative  values in the dataframe
 # As it is very unlikely to not have any calls and because it does not make sense to have 
@@ -100,7 +116,7 @@ test_cleaned_data$`Emergency Transfers` == str_count(test_cleaned_data$Incident_
 # identifying any mistakes that may exist within the data
 
 ## Test for null values within the whole dataframe
-is.na(test_cleaned_data)
+is.na(test_clean_map_data)
 
 ## Test for negative values within the whole dataframe
-test_cleaned_data <= 0
+test_clean_map_data <= 0
