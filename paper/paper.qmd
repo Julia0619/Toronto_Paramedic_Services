@@ -127,7 +127,7 @@ data |>
   )
 ```
 
-To map this data, a shapefile with the boundaries for Toronto's FSAs was required. This data was acquired from the Open Government Data portal by the Government of Canada [@2021census]. Additional information about this dataset, including how it was prepared and used can be found in the Appendix (@sec-appendix). 
+To map this data, a shapefile with the boundaries for Toronto's FSAs was required. This data, "2021 Census - Boundary Files", was acquired from the Open Government Data portal by the Government of Canada [@2021census]. Additional information about this dataset, including how it was prepared and used can be found in the Appendix (@sec-appendix). 
 
 # Results {#sec-results}
 
@@ -225,7 +225,7 @@ Similarly, as vehicle accidents are a second potential driver of EMS demand, ove
 
 By examining EMS demand through different incident types, the investigation above finds that medical emergencies are responsible for a significantly large portion of 911 calls. However, this finding applies to the city of Toronto in general, and emergency calls for medical emergencies may not be the driver of EMS demand within individual regions of Toronto. Thus, the following part of this analysis looks to identify the driver for each Forward Sortation Area (FSA) in Toronto. If different FSAs have different drivers of EMS demand, then strategies that are tailored to each region's circumstance may be more effective in managing EMS demand across the city. 
 
-@fig-map
+It is important to note that there are only 96 FSAs that can be mapped for the city of Toronto [@2021census]. For this reason, while the Paramedic Services Incident Data provides records of emergency calls for 184 unique FSAs, only 96 could be mapped in @fig-map below. So, although Toronto Paramedic Services have responded to calls throughout the Census Metropolitan Area (CMA) of Toronto and other surrounding regions, calls that occurred within the city of Toronto as outlined by the 2021 Census - Boundary Files data are considered.  
 
 ```{r, results = 'hide'}
 #| message: false
@@ -240,12 +240,12 @@ library(repr)
 
 # Reading in the shapefile
 
-#toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/TorontoForwardSortationAreas")
+toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas(TOR)")
 #view(toronto_forward_sortation_areas)
 
 # Reading in the paramedic services data
 
-#map_data <- read_csv(here::here("data/analysis_data/analysis_data_FOR_MAP.csv"))
+map_data <- read_csv(here::here("data/analysis_data/analysis_data_FOR_MAP.csv"))
 #view(map_data)
 
 # Test to see if shapefile produces a map
@@ -255,23 +255,28 @@ library(repr)
 
 # Merge map_data and toronto_forward_sortation_areas by the column "CFSAUID"
 
-#merged_map_data <- merge(toronto_forward_sortation_areas, map_data, by = "CFSAUID")
+merged_map_data <- merge(toronto_forward_sortation_areas, map_data, by = "CFSAUID")
 #view(merged_map_data)
 
 # Map the merged data
 
-#options(repr.plot.width = 20, repr.plot.height = 16)
+options(repr.plot.width = 20, repr.plot.height = 16)
 
-#ggplot(merged_map_data) + 
-  #geom_sf(aes(fill = EMS_Demand_Driver)) +
-  #labs(title = "EMS Demand Drivers By Forward Sortation Area (FSA)",
-         #x = "Longitude", y="Latitude", 
-       #caption = "Data Source: Open Canada 2021 Census & Toronto Paramedic Services") +
-  #theme_light() + theme(plot.title = element_text(hjust = 0.3)) +
-  #scale_fill_discrete(name = "EMS Demand Driver") +
-  #scale_fill_manual(values = c("lightblue")) +
-  #geom_sf_label(mapping = aes(label = merged_map_data$CFSAUID), size = 3, check_overlap = TRUE)
+ggplot(merged_map_data) + 
+  geom_sf(aes(fill = EMS_Demand_Driver)) +
+  labs(title = "EMS Demand Drivers By Forward Sortation Area (FSA)",
+         x = "Longitude", y="Latitude", 
+       caption = "Data Source: Open Canada 2021 Census & Toronto Paramedic Services") +
+  theme_light() + theme(plot.title = element_text(hjust = 0.3)) +
+  scale_fill_discrete(name = "EMS Demand Driver") +
+  scale_fill_manual(values = c("lightblue"))
 ```
+
+@fig-map illustrates the drivers of EMS demand for each FSA within the city of Toronto, and the key driver for all 96 FSAs in the city appears to be medical emergencies. This shows that for at least these 96 FSAs, strategies that focus on promoting health and well-being may be effective in reducing the pressure paramedic services face with high EMS demand. However, there are many more FSAs that paramedic services respond to and [TABLE] shows the remaining FSAs and their respective EMS demand drivers. 
+
+
+From [TABLE], it is evident that not all FSAs have the same driver for EMS demand. For instance, the FSA, "", has emergency transfers as its driver while "" has accidents as it driver. Thus, the takeaway from this analysis is that paramedic service strategies that are tailored to a specific region and its characteristics and needs, may be better. 
+As each region or FSA will vary from others, this variability will make a "one size fits all approach" diffiuclt to employ. so, tailored strategies within paramedic services (allocation of resources, staff) as well as within each region (e.g. programs) are crucial. 
 
 
 \newpage
