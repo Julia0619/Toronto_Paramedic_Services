@@ -1,12 +1,12 @@
 ---
-title: "Toronto Paramedic Services"
-subtitle: "A deeper look into what drives Emergency Medical Services (EMS) demand."
+title: "What Drives Emergency Medical Services (EMS) Demand?"
+subtitle: "Community-based EMS-demand-management strategies that focus on medical emergencies, emergency transfers, and vehicle accidents may help enhance paramedic services"
 author: 
   - Julia Lee
 thanks: "Code and data are available at: https://github.com/JuliaJLee/Toronto_Paramedic_Services.git"
 date: today
 date-format: long
-abstract: "In 2023, there were over 1,000 cases where an ambulance was unavailable to respond to an emergency call. This calls for urgent action as every moment is critical in emergency situations. By examining Paramedic Services Incident Data (2017-2022) provided by Toronto Paramedic Services, the following anaylsis aims to identify the key drivers of Emergency Medical Services (EMS) demand within Toronto to help inform more effective strategies for managing EMS demand. In short, medical emergencies and vehicle accidents appear to be the most prominent drivers of EMS demand, suggesting that strategies that seek to better manage demand in these areas may enhance the overall efficiency of paramedic services."
+abstract: "By examining Paramedic Services Incident Data (2017-2022) provided by Toronto Paramedic Services, the following anaylsis aims to identify the key drivers of Emergency Medical Services (EMS) demand to help inform demand-management strategies. Through data visualization, this analysis finds that medical emergencies, incidents requiring emergency transfers, and vehicle accidents appear to be the most prominent drivers of EMS demand. This suggests that strategies that target these drivers may enhance the overall efficiency of paramedic services. Additionally, the present analysis emphasizes that thoughtful consideration for the unique needs of those who require EMS is important to build practical and productive EMS-demand-management strategies."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -29,11 +29,11 @@ library(dplyr)
 
 "In case of an emergency, please call 911." From building walls to road signs, this is a message that appears almost everywhere, and it instills the idea that no matter the circumstance, there will always be emergency services available to help. However, research shows that this is not the case. A report on Toronto's paramedic services highlights that there were no ambulances available to over 1,000 calls in 2023 [@auditorreport]. With drastically increasing wait times for those who required Emergency Medical Services (EMS), it is crucial to understand why paramedic services are unable to keep up with a seemingly growing demand for EMS.
 
-In response to this rising challenge, the report posits that in order to elevate the "efficiency and effectiveness" [@auditorreport] of Toronto's paramedic services, further research on how to manage EMS demand is needed. Thus, this paper seeks to investigate the factors that seem to be driving EMS demand within Toronto. Using Paramedic Services Incident Data offered by Toronto Paramedic Services, the aim is to identify which types of emergencies (e.g. medical emergencies or vehicle accidents) strongly drive EMS demand. Knowing this can help inform effective strategies that allocate resources to these drivers for better EMS demand management. 
+In response to this rising challenge, the report posits that in order to elevate the "efficiency and effectiveness" [@auditorreport] of Toronto's paramedic services, further research on how to manage EMS demand is needed. Thus, this paper seeks to investigate the factors that seem to be driving EMS demand. Using Paramedic Services Incident Data offered by Toronto Paramedic Services, the aim is to identify which types of emergencies (e.g. medical emergencies or vehicle accidents) drive EMS demand and examine whether . Knowing this can help inform effective strategies that allocate resources to these drivers for better EMS demand management. 
 
-With this, this paper first examines the total number of emergency calls made from 2017 to 2022 to better understand how EMS demand has changed over time. Then, it looks at EMS demand through five different incident types as outlined by Toronto Paramedic Services to determine which of these five incident types are key drivers of the total EMS demand. As a result, this analysis finds that medical emergencies and vehicle accidents are notable drivers of EMS demand within Toronto. 
+With this, this analysis first examines the total number of emergency calls made from 2017 to 2022 to better understand how EMS demand has changed over time. Then, it looks at EMS demand through five different incident types as outlined by Toronto Paramedic Services to identify the incident types that push EMS demand. Lastly, this analysis considers whether drivers of EMS demand differ between different regions. As a result, the present analysis finds that overall, medical emergencies, incidents requiring emergency transfers, and vehicle accidents seem to be the most prominent drivers of EMS demand. However, as different drivers of EMS demand are found for different regions, this analysis highlights that while strategies that target medical emergencies, incidents requiring emergency transfers, and vehicle accidents may enhance the overall efficiency of paramedic services, it is also crucial to consider the unique needs of various regions and their residents to shape stronger EMS-demand-management strategies.
 
-In what follows, the paper will define the data that was used within this analysis (@sec-data), provide a detailed account of the results (@sec-results), and put forth a discussion of the analysis along with its limitations and next steps (@sec-discussion).
+In what follows, a description of the data that was used within this analysis (@sec-data), detailed account of the results (@sec-results), and a brief discussion of the analysis along with its limitations and next steps (@sec-discussion) will be provided. 
 
 # Data {#sec-data}
 
@@ -149,7 +149,7 @@ ggplot(data, aes(x = Year, y = Total_Emergency_Calls)) +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
-@fig-totalemsdemand displays the total number of emergency calls for each year. The total number of emergency calls appears to increase in 2020 after a notable decrease in 2019. This pattern likely reflects the the onset of the covid-19 pandemic. Though the number of emergency calls appears to fluctuate over the years, the change is not drastic, indicating that there has consistently been a heightened demand for EMS within Toronto.
+@fig-totalemsdemand displays the total number of emergency calls for each year. The total number of emergency calls appears to increase in 2020 after a notable decrease in 2019. This pattern likely reflects the the onset of the covid-19 pandemic. Though the number of emergency calls appears to fluctuate over the years, the change is not drastic, indicating that there has consistently been a heightened demand for EMS.
 
 ## EMS Demand from 2017 to 2022 Based on Incident Type
 
@@ -184,14 +184,14 @@ data |>
 ```
 
 
-By zooming into @fig-incidentemsdemand with @fig-incidentemsdemandzoom below, a clearer look at the other incident types is provided. With @fig-incidentemsdemandzoom, it becomes clear that a second driver of EMS demand may be vehicle accidents, though not as strong as medical emergencies.
+By zooming into @fig-incidentemsdemand with @fig-incidentemsdemandzoom below, a clearer look at the other incident types is provided. With @fig-incidentemsdemandzoom, it becomes clear that vehicle accidents and emergency transfers may be other potential drivers of EMS demand, though not as strong as medical emergencies.
 
 
 ```{r}
 #| echo: false 
 #| message: false
 #| label: fig-incidentemsdemandzoom
-#| fig-cap: EMS Demand for Each Year between 2017 and 2022
+#| fig-cap: Zooming in on Figure 2
 
 data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
@@ -217,9 +217,9 @@ data |>
 
 \newpage
 
-As a prominent driver of EMS demand is medical-emergency-related calls, strategies that focus on efficiently managing calls for medical emergencies may help to better navigate EMS demand as a whole. Response times for EMS demand have been greatly impacted by offload delays, staffing/training challenges, and traffic congestion [@auditorreport]. With medical emergencies, a shortage of doctors has placed pressure on paramedic services as residents rely on and turn to these services more often [@cbcarticle]. This in turn, increases in offload delays - the time it takes to offload patients into hospitals. Longer offload delays mean longer response times for other incidents. Putting all of this together, a strategy to better manage EMS demand for medical emergencies may be to focus on promoting primary-care providers (i.e. family doctors) and to allocate resources to provide additional health services (e.g. programs to consult with a health-care professional online from home).
+As medical emergencies seem to be prominent drivers of EMS demand, strategies that focus on efficiently managing calls for medical emergencies may help to better navigate EMS demand as a whole. Response times for EMS demand have been greatly impacted by offload delays, staffing/training challenges, and traffic congestion [@auditorreport]. With medical emergencies, a shortage of doctors has placed pressure on paramedic services as residents rely on and turn to these services more often [@cbcarticle]. This in turn, increases in offload delays - the time it takes to offload patients into hospitals. Longer offload delays mean longer response times for other incidents. Putting all of this together, a strategy to better manage EMS demand for medical emergencies may be to focus on promoting primary-care providers (i.e. family doctors) and to allocate resources to provide additional health services (e.g. programs to consult with a health-care professional online from home).
 
-Similarly, as vehicle accidents can be a second potential driver of EMS demand, overall EMS demand may be better managed if paramedic service strategies also target vehicle-accident-related calls. Traffic congestion has been found to increase paramedic response times [@journal], and with the current increase in traffic due to multiple construction projects throughout Toronto, longer paramedic response times and the unavailability of paramedic services can be expected. To efficiently navigate EMS demand for vehicle accidents, strategies may center around accident prevention or effective distribution of resources near accident-prone regions for faster response times. 
+Similarly, as vehicle accidents and emergency transfers can be potential drivers of EMS demand, overall EMS demand may be better managed if paramedic service strategies also target vehicle-accident- and emergency-transfer-related calls. Traffic congestion has been found to increase paramedic response times [@journal], and with the current increase in traffic due to multiple construction projects throughout Toronto, longer paramedic response times and the unavailability of paramedic services can be expected. To efficiently navigate EMS demand for vehicle accidents and emergency transfers, strategies may center around vehicle accident prevention or the allocation of more staff and resources to accident or emergency-prone regions for faster response times. 
 
 ## Mapping EMS Demand 
 
@@ -321,6 +321,12 @@ ggplot(merged_map_data) +
 
 ```
 
+\newpage
+
+By focusing in on the city of Toronto with @fig-mapzoom, EMS demand seems to be significantly driven by medical emergencies and slightly driven by vehicle accidents and emergency transfers.  
+
+These results suggest that what drives EMS demand is dependent on the characteristics of a particular region. Socio-economic or demographic factors such as income or population density of a given area can impact the types of incidents that occur, total number of emergency calls that are made and the severity of each incident. Thus, there is a need to consider individual communities to build tailored solutions that effectively address their unique needs and better manage widespread EMS demand. 
+
 
 \newpage
 
@@ -329,15 +335,15 @@ ggplot(merged_map_data) +
 
 ## Summary
 
-As demand for EMS continues to be a challenge, identifying the areas where most of the demand comes from can help better inform strategies to better manage it. Thus, this analysis investigates... 
+As high demand for EMS continues to be a challenge, identifying the areas where most of the demand comes from can help to inform effective demand-management strategies. Through an investigation of EMS demand, the present analysis identifies three main drivers of EMS demand (medical emergencies, incidents requiring emergency transfers, and vehicle accidents) and also considers how these drivers might differ in different contexts (i.e. different regions or communities).
 
-To this, the given analysis finds that medical emergencies and vehicle accidents are notable drivers of EMS demand within Toronto. 
+To further this research, the relationship between the driver of EMS demand for every forward sortation area and each area's socio-economic or demographic characteristics should be examined. As there are many variables that can impact one's health and ultimately, whether or not they have to seek EMS, understanding how factors like income or population density affect the occurrence of medical emergencies, emergency transfers, and vehicle accidents can help build tailored and effective strategies. It may also be helpful to consider ambulance station locations in addition to @fig-map to see whether ambulance stations and resources are optimally distributed and if additional resources are needed depending on the EMS demand driver for a particular region. 
 
-Thus, these findings offer a deeper understanding about the underlying factors that can drive EMS demand, and this understanding can further facilitate the exploration of various strategies that allow paramedic services to effectively operate even under high demand.
+In short, the findings of this analysis offer a deeper understanding about what drives EMS demand, and this understanding can further facilitate the exploration of various strategies that allow paramedic services to effectively operate even under high demand.
 
 ## Limitations
 
-CONTENT
+Though this analysis carefully examines EMS demand, there are some limitations to consider. It is mentioned in @sec-analysis that the records of incidents without an assigned incident type were omitted from the analysis. However, this may have limited the overall representation of each incident type as well as the conclusions that are made. Further, it is important to note that @fig-map only data from 2022. So, although @fig-map demonstrates that differences between regions and their drivers for EMS demand can exist, it is not an accurate reflection of what each forward sortation area because only one instance (the year 2022) is considered. 
 
 \newpage
 
@@ -375,15 +381,16 @@ summary_data |>
 
 ## Map Data 
 
-The shapefile that is used in this analysis contains the forward sortation area boundaries for every province and territory of Canada. In this file, every forward sortation area is matched with a set of spatial information (i.e. coordinates). @tbl-shapefile illustrates this data. "CFSAUID" contains every FSA that Toronto Paramedic Services responded to in 2022, and "DGUID" refers to the "Dissemination Geography Unique Identifier (DGUID)" - an ID that all geographic areas in Canada have. The variables, "PRUID" and "PRNAME", represent province numbers and names, respectively. "LANDAREA" is the total area in square kilometers of each forward sortation area, and "Geometry" holds the spatial information for every area.
-
-```{r, results = 'hide'}
+```{r}
 #| echo: false
 #| message: false
-#| label: tbl-shapefile
+#| warning: false
+#| label: tbl-shape
 #| tbl-cap: "Forward Sortation Areas Location Data" 
 
-data <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas/Forward_SortationAreas")
+library(sf)
+
+data <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas/Forward_SortationAreas", quiet=TRUE)
 
 data |>
   slice(1:3) |>
@@ -397,6 +404,7 @@ data |>
     format.args = list(big.mark = ",")
   )
 ```
+The shapefile that is used in this analysis contains the forward sortation area boundaries for every province and territory of Canada. In this file, every forward sortation area is matched with a set of spatial information (i.e. coordinates). @tbl-shape illustrates this data. "CFSAUID" contains every FSA that Toronto Paramedic Services responded to in 2022, and "DGUID" refers to the "Dissemination Geography Unique Identifier (DGUID)" - an ID that all geographic areas in Canada have. The variables, "PRUID" and "PRNAME", represent province numbers and names, respectively. "LANDAREA" is the total area in square kilometers of each forward sortation area, and "Geometry" holds the spatial information for every area.
 
 To isolate the forward sortation areas given in the Paramedic Services Incident Data for 2022, ArcGIS Pro software [@arcgis] was used to remove any areas that were not recorded. Specifically, the forward sortation areas that were not present within the Paramedic Services Incident Data were deleted from the shapefile's attribute table (i.e. data table) and re-saved as a new shapefile. After making the necessary modifications, the spatial data for forward sortation areas was merged with the data present in @tbl-mapdata and mapped to show the "EMS Demand Driver" for every area. The final map is shown in @fig-map.
 
