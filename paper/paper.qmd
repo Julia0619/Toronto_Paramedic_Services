@@ -39,7 +39,7 @@ In what follows, a description of the data that was used within this analysis (@
 
 ## Toronto Paramedic Services Data
 
-Paramedic Services Incident Data (2017-2022) is provided by Toronto Paramedic Services [@torontoparamedicservices]. The records of when a paramedic was dispatched having received a call, they type of incident, the priority level of each incident, the number of paramedic units that arrived at the scene, and the general location of each incident are all periodically updated by hand to the city of Toronto's Open Data portal [@opentorontodata]. 
+Paramedic Services Incident Data (2017-2022) is provided by Toronto Paramedic Services [@torontoparamedicservices]. The records of when a paramedic was dispatched having received a call, the type of incident, the priority level of each incident, the number of paramedic units that arrived at the scene, and the general location of each incident are all periodically updated to the city of Toronto's Open Data portal [@opentorontodata]. 
 
 To simulate, test, download, and clean the Paramedic Services Incident Data (2017-2022), the statistical programming language R was used [@citeR]. Specific libraries that assisted the analysis include `tidyverse` [@tidyverse], `dplyr` [@dplyr], `opendatatoronto` [@opendatatoronto], `tinytex` [@tinytex], `ggplot2` [@ggplot2], `knitr` [@knitr], `maps` [@maps], and `sf` [@sf]. 
 
@@ -149,11 +149,11 @@ ggplot(data, aes(x = Year, y = Total_Emergency_Calls)) +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
-@fig-totalemsdemand displays the total number of emergency calls for each year. The total number of emergency calls appears to increase in 2020 after a notable decrease in 2019. This pattern likely reflects the the onset of the covid-19 pandemic. Though the number of emergency calls appears to fluctuate over the years, the change is not drastic, indicating that there has consistently been a heightened demand for EMS.
+@fig-totalemsdemand displays the total number of emergency calls for each year. The total number of emergency calls appears to increase in 2020 after a notable decrease in 2019. This pattern likely reflects the onset of the covid-19 pandemic. Though the number of emergency calls appears to fluctuate over the years, the change is not drastic, indicating that there has consistently been a heightened demand for EMS.
 
 ## EMS Demand from 2017 to 2022 Based on Incident Type {#sec-incidenttypes}
 
-To further unpack what is driving this EMS demand, the number of emergency calls for individual incident type are also considered. @fig-incidentemsdemand illustrates the number of emergency calls for each incident type along with the total number of emergency calls. Based on @fig-incidentemsdemand, demands for EMS are markedly higher for medical emergencies than any other incident type, suggesting that medical circumstances are key drivers that propel EMS demand. 
+To further unpack what is driving this EMS demand, the number of emergency calls for each incident type are also considered. @fig-incidentemsdemand illustrates the number of emergency calls for each incident type along with the total number of emergency calls. Based on @fig-incidentemsdemand, demands for EMS are markedly higher for medical emergencies than any other incident type, suggesting that medical circumstances are key drivers that propel EMS demand. 
 
 ```{r}
 #| echo: false 
@@ -343,7 +343,7 @@ In short, the findings of this analysis offer a deeper understanding about what 
 
 ## Limitations
 
-Though this analysis carefully examines EMS demand, there are some limitations to consider. It is mentioned in @sec-analysis that the records of incidents without an assigned incident type were omitted from the analysis. This may have limited the overall representation of the number of emergency calls for each incident type. Further, it is important to note that @fig-map only considers data from 2022. So, although @fig-map in @sec-maplocation demonstrates that differences between communities and their drivers for EMS demand can exist, a better reflection of the actual drivers of EMS demand for each community may be achieved by considering multiple years of incident data (i.e. from 2017 to 2022). 
+Though this analysis carefully examines EMS demand, there are some limitations to consider. It is mentioned in @sec-analysis that the records of incidents without an assigned incident type were omitted from the analysis. This may have limited the overall representation of the number of emergency calls for each incident type. Further, it is important to note that @fig-map in @sec-maplocation only considers data from 2022. So, although @fig-map demonstrates that differences between communities and their drivers for EMS demand can exist, a better reflection of the actual drivers of EMS demand for each community may be achieved by considering multiple years of incident data (i.e. from 2017 to 2022). 
 
 \newpage
 
@@ -404,7 +404,7 @@ data |>
     format.args = list(big.mark = ",")
   )
 ```
-The shapefile that is used in this analysis contains the forward sortation area boundaries for every province and territory of Canada. In this file, every forward sortation area is matched with spatial information (i.e. coordinates). @tbl-shape illustrates this data. "CFSAUID" contains every FSA that Toronto Paramedic Services responded to in 2022, and "DGUID" refers to the "Dissemination Geography Unique Identifier (DGUID)" - an ID that all geographic areas in Canada have. The variables, "PRUID" and "PRNAME", represent province numbers and names, respectively. "LANDAREA" is the total area in square kilometers of each forward sortation area, and "Geometry" holds the spatial information for every area.
+The shapefile that is used in this analysis contains the forward sortation area boundaries for every province and territory of Canada. In this file, every forward sortation area is matched with spatial information (i.e. coordinates). @tbl-shape illustrates this data. "CFSAUID" contains every FSA in Canada, and "DGUID" refers to the "Dissemination Geography Unique Identifier (DGUID)" - an ID that all geographic areas in Canada have. The variables, "PRUID" and "PRNAME", represent province numbers and names, respectively. "LANDAREA" is the total area in square kilometers of each forward sortation area, and "Geometry" holds the spatial information for every area.
 
 To isolate the forward sortation areas given in the Paramedic Services Incident Data for 2022, ArcGIS Pro software [@arcgis] was used to remove any areas that were not recorded. Specifically, the forward sortation areas that were not present within the Paramedic Services Incident Data were deleted from the shapefile's attribute table (i.e. data table) and re-saved as a new shapefile. After making the necessary modifications, the spatial data for forward sortation areas was merged with the data present in @tbl-mapdata and mapped to show the "EMS Demand Driver" for every area. The final map is shown in @fig-map in @sec-maplocation.
 
