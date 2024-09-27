@@ -46,7 +46,7 @@ fsa_data_2 <- fsa_data[,-c(1:3,5:6)]
 
 ## Need to create a new dataframe that lists each fsa and its number of incidents for each incident type
 
-### First, create a dataframe that has each fsa in a single row and a list of all the incident types in 
+### Create a dataframe that has each fsa in a single row and a list of all the incident types in 
 ### a column
 
 fsa_data_3 <- fsa_data_2 |> 
@@ -54,7 +54,7 @@ fsa_data_3 <- fsa_data_2 |>
   summarise(Incident_Type = paste(Incident_Type, collapse = ","))
 #view(fsa_data_3)
 
-### Second, create columns that contain the number of incidents for each incident type for each fsa
+### Create columns that contain the number of incidents for each incident type for each fsa
 
 fsa_data_3$"Emergency Transfers" <- str_count(fsa_data_3$Incident_Type, "Emergency Transfer")
 #view(fsa_data_3)
@@ -69,7 +69,7 @@ fsa_data_3$"Fires" <- str_count(fsa_data_3$Incident_Type, "Fire")
 #view(fsa_data_3)
 
 fsa_data_3$"Airport Standbys" <- str_count(fsa_data_3$Incident_Type, "Airport Standby")
-view(fsa_data_3)
+#view(fsa_data_3)
 
 ## Add a column that contains the name of the incident type that had the most demand for each fsa
 
@@ -85,6 +85,11 @@ fsa_data_3 <-
   rename(
     CFSAUID = Forward_Sortation_Area
   )
+#view(fsa_data_3)
+
+## Remove 2 rows with fsa that don't have defined incident types
+
+fsa_data_3 <- fsa_data_3[-c(62:63),]
 view(fsa_data_3)
 
 ------------------------------------------------------------------------------------------
@@ -120,3 +125,4 @@ is.na(test_clean_map_data)
 
 ## Test for negative values within the whole dataframe
 test_clean_map_data <= 0
+
