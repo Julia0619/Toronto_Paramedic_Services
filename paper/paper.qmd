@@ -242,6 +242,8 @@ library(sf)
 forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas/Forward_SortationAreas")
 #view(forward_sortation_areas)
 
+# Change the coordinate system of the shapefile from NAD83 to WGS84
+
 new_forward_sortation_areas <- st_transform(forward_sortation_areas, crs = 4326)
 #new_forward_sortation_areas
 
@@ -288,6 +290,8 @@ library(sf)
 
 forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas/Forward_SortationAreas")
 #view(forward_sortation_areas)
+
+# Change the coordinate system of the shapefile from NAD83 to WGS84
 
 new_forward_sortation_areas <- st_transform(forward_sortation_areas, crs = 4326)
 #new_forward_sortation_areas
