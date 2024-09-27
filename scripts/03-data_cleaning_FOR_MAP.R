@@ -111,7 +111,7 @@ write_csv(fsa_data_3, file = "data/analysis_data/analysis_data_FOR_MAP.csv")
 # column
 
 test_clean_map_data <- read_csv("data/analysis_data/analysis_data_FOR_MAP.csv")
-#view(test_clean_map_data)
+#view(test_clean_map_data) 
 
 test_clean_map_data$`Emergency Transfers` == str_count(test_clean_map_data$Incident_Type, "Emergency Transfer")
 
