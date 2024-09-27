@@ -104,7 +104,7 @@ The column "Unclassified Calls" in @tbl-analysis represents the emergency calls 
 
 ## Map Data
 
-To further understand what drives EMS demand, this analysis uses the Forward Sortation Areas (FSA) provided by the Paramedic Services Incident Data (2017-2022) to map the driver of EMS demand within each FSA. For the maps within this analysis, the analysis data explained in @sec-analysis needed to be modified. By grouping the data by FSAs, the types of incidents recorded within each unique FSA and the number of incidents that occurred with each incident type could be found. The "driver" of EMS demand for a given FSA was determined by the incident type that had the most number of calls. A small snippet of the modified analysis data is shown below in @tbl-mapdata. The column that contains each FSA is named "CFSAUID" to ensure that each FSA can be mapped. 
+To further understand what drives EMS demand, this analysis uses the Forward Sortation Areas (FSA) provided by the Paramedic Services Incident Data (2017-2022) to map EMS demand across all the locations Toronto Paramedic Services respond to. The map is based on the Paramedic Services Incident Data from 2022. By grouping the data shown in @sec-analysis by FSAs, the types of incidents recorded within each unique FSA and the number of incidents that occurred with each incident type could be found. The "driver" of EMS demand for a given FSA was determined by the incident type that had the most number of calls. A small snippet of the modified analysis data is shown below in @tbl-mapdata. The column, "CFSAUID" contains every FSA that Toronto Paramedic Services responded to in 2022. 
 
 ```{r}
 #| echo: false
@@ -127,7 +127,7 @@ data |>
   )
 ```
 
-To map this data, a shapefile with the boundaries for Toronto's FSAs was required. This data, "2021 Census - Boundary Files", was acquired from the Open Government Data portal by the Government of Canada [@2021census]. Additional information about this dataset, including how it was prepared and used can be found in the Appendix (@sec-appendix). 
+To map this data, a shapefile with the spatial information for all recorded FSAs is combined with the data shown in @tbl-mapdata. The shapefile, titled, "2021 Census - Boundary Files", is provided by the Open Government Data portal from the Government of Canada [@2021census]. Additional information about this dataset, including how it is used can be found in the Appendix (@sec-appendix). 
 
 # Results {#sec-results}
 
@@ -236,12 +236,12 @@ It is important to note that there are only 96 FSAs that can be mapped for the c
 
 library(maps)
 library(sf)
-library(repr)
+#library(repr)
 
 # Reading in the shapefile
 
-toronto_forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas(TOR)")
-#view(toronto_forward_sortation_areas)
+forward_sortation_areas <- st_read("~/Toronto_Paramedic_Services/data/ForwardSortationAreas")
+view(forward_sortation_areas)
 
 # Reading in the paramedic services data
 
@@ -260,7 +260,7 @@ merged_map_data <- merge(toronto_forward_sortation_areas, map_data, by = "CFSAUI
 
 # Map the merged data
 
-options(repr.plot.width = 20, repr.plot.height = 16)
+#options(repr.plot.width = 20, repr.plot.height = 16)
 
 ggplot(merged_map_data) + 
   geom_sf(aes(fill = EMS_Demand_Driver)) +
