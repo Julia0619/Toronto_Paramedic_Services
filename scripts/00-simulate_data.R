@@ -4,7 +4,7 @@
 # Date: 23 September 2024
 # Contact: jlee.lee@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Review the plan and sketches for the analysis in the "other" folder
+# Pre-requisites: Review the plan and sketches for the analysis in the "plan" folder
 # Any other information needed? N/A
 
 
