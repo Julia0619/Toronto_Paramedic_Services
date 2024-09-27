@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository provides readers with all the necessary data, R scripts, and files to understand and reproduce an analysis on the city of Toronto's Paramedic Services.
+This repository provides readers with all the necessary data, R scripts, and files to understand and reproduce an analysis on Toronto Paramedic Services.
 
 
 ## File Structure
